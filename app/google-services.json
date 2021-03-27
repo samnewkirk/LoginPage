@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1041491957933",
+    "project_id": "messengerapp-c31b8",
+    "storage_bucket": "messengerapp-c31b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041491957933:android:25172f7246d6f245e0ce24",
+        "android_client_info": {
+          "package_name": "com.example.messengerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041491957933-plgnl6rjp10or0dtj9d4b59l84jv47g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA680XjRh3gruL81bjpGbdw4aI27B2399s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041491957933-plgnl6rjp10or0dtj9d4b59l84jv47g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
