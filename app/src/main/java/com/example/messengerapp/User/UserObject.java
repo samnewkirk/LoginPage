@@ -1,4 +1,4 @@
-package com.example.messengerapp;
+package com.example.messengerapp.User;
 
 public class UserObject {
     private String name, phone, uid;
@@ -12,11 +12,9 @@ public class UserObject {
     public String getPhone() {
         return phone;
     }
-
     public String getName() {
         return name;
     }
-
     public String getUid() {
         return uid;
     }

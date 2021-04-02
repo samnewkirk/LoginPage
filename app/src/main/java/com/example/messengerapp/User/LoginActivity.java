@@ -1,4 +1,4 @@
-package com.example.messengerapp;
+package com.example.messengerapp.User;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.messengerapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -74,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCodeSent(@NonNull String VerificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            public void onCodeSent(@NonNull String VerificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(VerificationId, forceResendingToken);
 
                 mVerificationId = VerificationId;
@@ -94,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
                     if(user != null){
                         final DatabaseReference mUserDB = FirebaseDatabase.getInstance().getReference().child("user").child(user.getUid());
                         mUserDB.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,10 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void onCancelled(@NonNull DatabaseError error) {}
                         });
 
-
                     }
-
-
                     //userIsLoggedIn();
                 }
             }
