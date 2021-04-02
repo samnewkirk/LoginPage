@@ -16,29 +16,29 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
+public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
 
-    ArrayList<UserObject> userList;
+    ArrayList<UserObject> ChatList;
 
-    public UserListAdapter(ArrayList<UserObject> userList){
-        this.userList = userList;
+    public ChatListAdapter(ArrayList<UserObject> ChatList){
+        this.ChatList = ChatList;
     }
 
     @NonNull
     @Override
-    public UserListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ChatListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
 
-        UserListViewHolder rcv = new UserListViewHolder(layoutView);
+        ChatListViewHolder rcv = new ChatListViewHolder(layoutView);
         return rcv;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserListViewHolder holder, int position) {
-        holder.mName.setText(userList.get(position).getName());
-        holder.mPhone.setText(userList.get(position).getPhone());
+    public void onBindViewHolder(@NonNull ChatListViewHolder holder, int position) {
+        holder.mName.setText(ChatList.get(position).getName());
+        holder.mPhone.setText(ChatList.get(position).getPhone());
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +46,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
 
                 FirebaseDatabase.getInstance().getReference().child("user").child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
-                FirebaseDatabase.getInstance().getReference().child("user").child(userList.get(position).getUid()).child("chat").child(key).setValue(true);
+                FirebaseDatabase.getInstance().getReference().child("user").child(ChatList.get(position).getUid()).child("chat").child(key).setValue(true);
 
             }
         });
@@ -54,13 +54,13 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return ChatList.size();
     }
 
-    public class UserListViewHolder extends RecyclerView.ViewHolder{
+    public class ChatListViewHolder extends RecyclerView.ViewHolder{
         public TextView mName, mPhone;
         public LinearLayout mLayout;
-        public UserListViewHolder(View view){
+        public ChatListViewHolder(View view){
             super(view);
             mName = view.findViewById(R.id.name);
             mPhone = view.findViewById(R.id.phone);
