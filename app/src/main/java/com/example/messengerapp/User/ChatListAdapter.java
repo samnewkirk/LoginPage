@@ -1,4 +1,4 @@
-package com.example.messengerapp.Chat;
+package com.example.messengerapp.User;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder> {
 
-    ArrayList<ChatObject> chatList = new ArrayList<ChatObject>();
+    ArrayList<ChatObject> chatList;
 
     public ChatListAdapter(ArrayList<ChatObject> chatList){
         this.chatList = chatList;
@@ -37,14 +37,14 @@ public class ChatListAdapter extends RecyclerView.Adapter<ChatListAdapter.ChatLi
 
     @Override
     public void onBindViewHolder(@NonNull ChatListViewHolder holder, int position) {
-        holder.mTitle.setText(chatList.get(position).getChatId());
+        holder.mTitle.setText(chatList.get(position).getChatID());
 
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(v.getContext(), ChatActivity.class);
-                //intent.putExtra("chatObject", chatList.get(holder.getAdapterPosition()));
-                //v.getContext().startActivity(intent);
+                Intent intent = new Intent( v.getContext(), ChatActivity.class);
+                intent.putExtra("chatObject", chatList.get(holder.getAdapterPosition()));
+                v.getContext().startActivity(intent);
             }
         });
     }
