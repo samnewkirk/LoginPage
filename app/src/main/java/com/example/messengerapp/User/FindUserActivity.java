@@ -9,9 +9,12 @@ import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.messengerapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FindUserActivity extends AppCompatActivity {
 
@@ -37,16 +41,54 @@ public class FindUserActivity extends AppCompatActivity {
         contactList = new ArrayList<>();
         userList = new ArrayList<>();
 
+        Button mCreate = findViewById(R.id.create);
+        mCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createChat();
+            }
+        });
+
         initializeRecyclerView();
         getContactList();
 
     }//onCreate
+
+    private void createChat() {
+        String key = FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+
+        DatabaseReference chatInfoDB = FirebaseDatabase.getInstance().getReference().child("chat").child(key).child("info");
+        DatabaseReference userDB = FirebaseDatabase.getInstance().getReference().child("chat");
+
+        HashMap newChatMap = new HashMap();
+        newChatMap.put("id", key);
+        newChatMap.put("users/" + FirebaseAuth.getInstance().getUid(), true);
+
+        Boolean validChat = false;
+        for(UserObject mUser : userList){
+            if(mUser.getSelected()){
+                validChat = true;
+                newChatMap.put("users/" + mUser.getUid(), true);
+                userDB.child(mUser.getUid()).child("chat").child(key).setValue(true);
+            }
+        }
+
+        if(validChat){
+            chatInfoDB.updateChildren(newChatMap);
+            userDB.child(FirebaseAuth.getInstance().getUid()).child("chat").child(key).setValue(true);
+        }
+    }//createChat
 
     private void getContactList(){
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while(phones.moveToNext()){
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phone = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            phone = phone.replace(" ", "");
+            phone = phone.replace("-", "");
+            phone = phone.replace("(", "");
+            phone = phone.replace(")", "");
 
             UserObject mContact = new UserObject(name, phone, "");
             contactList.add(mContact);
@@ -95,9 +137,7 @@ public class FindUserActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-
-    }
+    }//getUserDetails
 
     @SuppressLint("WrongConstant")
     private void initializeRecyclerView() {
